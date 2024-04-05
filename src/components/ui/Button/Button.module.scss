@@ -6,6 +6,8 @@
    cursor: pointer;
    justify-content: center;
    align-items: center;
+   font-weight: 700;
+   font-size: 16px;
    &:hover {
       background-color: darkblue; 
       cursor: pointer; 
@@ -13,8 +15,8 @@
 }
 
 .primary {
-      background-color: blue;
-      color: #fff;
+   background-color: blue;
+   color: #fff;
 }
 
 .button-google {
@@ -24,4 +26,13 @@
                background-color: #dfdfdf; 
                cursor: pointer; 
             }
+}
+
+.secondary {
+   background-color: #fff;
+   color: #000;
+   &:hover {
+         background-color: red; 
+         cursor: pointer; 
+   }
 }
