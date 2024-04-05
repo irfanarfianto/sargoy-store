@@ -62,8 +62,12 @@ const LoginView = () => {
                   {isLoading ? 'Loading...' : 'Login'}
                </button>
             </form>
+            <hr className={styles.login__form__devider} />
+            <div className={styles.login__form__other}>
+               <button type='button' onClick={() => signIn('google', { callbackUrl, redirect:false })} className={styles.login__form__other__button}><i className='bx bxl-google'/>Login dengan Google</button>
+            </div>
          </div>
-         <p className={styles.register__link}>Belum punya akun? <Link href="/auth/register">Register</Link></p>
+         <p className={styles.login__link}>Belum punya akun? <Link href="/auth/register">Register</Link></p>
       </div>
    );
 }
