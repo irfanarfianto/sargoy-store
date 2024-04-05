@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(200).json({ status: true, message: "sukses" })
          }
          else {
-            res.status(200).json({ status: false, message: "gagal" })
+            res.status(400).json({ status: false, message: "gagal" })
          }
       });
    }

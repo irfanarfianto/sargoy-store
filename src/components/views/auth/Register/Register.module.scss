@@ -20,32 +20,8 @@
       margin-bottom: 20px;
       box-shadow: 0 0 3px rgba(0,0,0,0.5);
 
-      &__item {
-         display: flex;
-         flex-direction: column;
-         margin: 20px 0;
-         &__input {
-            padding: 10px;
-            background-color: #eee;
-            margin-top: 5px;
-            border: none;
-            outline: none;
-         }
-      }
-
       &__button {
-         padding: 10px;
          width: 100%;
-         color: #eee;
-         background-color: blue;
-         margin-top: 5px;
-         border-radius: 5px;
-         border: none;
-         outline: none;
-         &:hover {
-            background-color: darkblue; 
-            cursor: pointer; 
-         }
       }
    }
    &__link {
