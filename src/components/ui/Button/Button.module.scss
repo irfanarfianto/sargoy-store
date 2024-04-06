@@ -32,7 +32,16 @@
    background-color: #fff;
    color: #000;
    &:hover {
-         background-color: red; 
+         background-color: #dfdfdf;
+         cursor: pointer; 
+   }
+}
+
+.danger {
+   background-color: red;
+   color: #fff;
+   &:hover {
+         background-color: darkred; 
          cursor: pointer; 
    }
 }

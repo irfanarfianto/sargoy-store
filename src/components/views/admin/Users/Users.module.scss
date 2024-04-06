@@ -1,0 +1,40 @@
+.users{
+   &__table{
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+      border: 1px solid #eee;
+      margin-top: 40px;
+      th, td {
+         text-align: left;
+         padding: 10px;
+         
+      }
+      thead {
+         tr {
+            background-color: #eee;
+         }
+      }
+      tr:nth-child(even) {
+         background-color: #eee;
+      }
+      &__action {
+         display: flex;
+         gap: 10px;
+       
+         &__edit, &__delete {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 400;
+            i {
+               font-size: 20px;
+            }
+         }
+      }
+   }
+}
