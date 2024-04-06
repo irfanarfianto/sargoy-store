@@ -47,7 +47,7 @@ const LoginView = () => {
 
 
    return (
-      <AuthLayout title='Login' link='/auth/register' linkText='Belum punya akun? Daftar '>
+      <AuthLayout title='Login' error={error} link='/auth/register' linkText='Belum punya akun? Daftar '>
          <form onSubmit={handleSubmit}>
             <Input label='Email' name='email' type='email' />
              <Input label='Password' name='password' type='password' />
