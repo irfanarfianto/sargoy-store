@@ -61,6 +61,9 @@ const authOptions: NextAuthOptions = {
             const data = {
                email: profile?.email,
                fullname: profile?.name,
+               password: '', 
+               created_at: new Date(), 
+               updated_at: new Date(),
                type: 'google'
             };
             
