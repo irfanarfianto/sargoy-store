@@ -4,7 +4,7 @@ import { addData, retrieveDataByField } from "@/lib/firebase/service";
 
 export async function signUp(userData: {
    email: string; fullname: string, phone: string, password: string,
-   role?: string, created_at?: Date, updated_at?: Date
+   role?: string, created_at?: Date, updated_at?: Date, image?: string
 }, callback: Function) {
    const data = await retrieveDataByField('users', 'email', userData.email);
    
@@ -14,6 +14,7 @@ export async function signUp(userData: {
       if (!userData.role) {
          userData.role = 'member';
       }
+      userData.image = '';
       userData.password = await bcrypt.hash(userData.password, 10);
       userData.created_at = new Date();
       userData.updated_at = new Date();
@@ -36,9 +37,12 @@ export async function SignIn(email: string) {
 }
 
 export async function loginWithGoogle(data: {
+   id?: string,
    email: string,
    role?: string,
-   password: string,
+   password?: string,
+   phone?: string,
+   image?: string,
    created_at?: Date, updated_at?: Date,
 }, callback: Function) {
    const user = await retrieveDataByField('users', 'email', data.email)
@@ -50,8 +54,9 @@ export async function loginWithGoogle(data: {
       data.created_at = new Date();
       data.updated_at = new Date();
       data.password = '';
-      await addData('users', data, (result: boolean) => {
-         if (result) {
+      await addData('users', data, (status: boolean, res: any) => {
+         data.id = res.path.replace('users/', '');
+         if (status) {
             callback(data);
          }
       })
