@@ -7,7 +7,7 @@ import { uploadFile } from "@/lib/firebase/service";
 import { useState } from "react";
 import userServices from "@/services/user";
 
-const ProfileMemberView = ({ profile, setProfile, session }: any) => {
+const ProfileMemberView = ({ profile, setProfile, session, setToaster }: any) => {
    const [changeImage, setChangeImage] = useState<any>({});
    const [isLoading, setIsLoading] = useState('');
 
@@ -34,6 +34,10 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
             phone: data.phone,
          });
          form.reset();
+         setToaster({
+            variant: 'success',
+            message: 'Success Update Profile'
+         });
       } else {
          setIsLoading('');
       }
@@ -60,12 +64,20 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
                   });
                   setChangeImage({});
                   e.target[0].value = '';
+                  setToaster({
+                     variant: 'success',
+                     message: 'Success Change Avatar'
+                  });
                } else {
                   setIsLoading('');
                }
             } else {
                setChangeImage({});
                setIsLoading('');
+               setToaster({
+                  variant: 'error',
+                  message: 'Failed Change Avatar'
+               });
             }
          });
       }
@@ -88,8 +100,16 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
       if (result.status === 200) {
          setIsLoading('');
          form.reset();
+         setToaster({
+            variant: 'success',
+            message: 'Success Change Password'
+         });
       } else {
          setIsLoading('');
+         setToaster({
+            variant: 'error',
+            message: 'Success Change password'
+         });
       }
    };
    return (
