@@ -3,28 +3,48 @@ import Modal from "@/components/ui/Modal";
 import userServices from "@/services/user";
 import styles from './ModalDeleteUser.module.scss';
 import { useSession } from "next-auth/react";
+import { User } from "next-auth";
+import { Dispatch, SetStateAction, useState } from "react";
 
-const ModalDeleteUser = (props: any) => {
-   const { deletedUser, setDeletedUser, setUsersData, setToaster } = props;
-   const session: any = useSession();
+type Propstypes = {
+   setUsersData: Dispatch<SetStateAction<User[]>>;
+   setToaster: Dispatch<SetStateAction<{}>>;
+   deletedUser: User | any;
+   setDeletedUser: Dispatch<SetStateAction<{}>>;
+   session: any;
+};
 
+const ModalDeleteUser = (props: Propstypes) => {
+   const { deletedUser, setDeletedUser, setUsersData, setToaster, session } = props;
+   const [isLoading, setIsLoading] = useState(false);
 
    const handleDelete = async () => {
-      userServices.deteleUser(deletedUser.id, session.data?.accessToken);
-      setDeletedUser({});
-      setToaster({
+      const result = await userServices.deteleUser(deletedUser.id, session.data?.accessToken);
+      if (result.status === 200) {
+         setIsLoading(false);
+         setToaster({
          variant: 'success',
          message: 'Success Delete User'
-      });
-      const { data } = await userServices.getAllUsers();
-      setUsersData(data.data);
+         });
+         setDeletedUser({});
+         const { data } = await userServices.getAllUsers();
+         setUsersData(data.data);
+      } else {
+         setIsLoading(false);
+         setToaster({
+            variant: 'danger',
+            message: 'Failed Delete User'
+         });
+      }
    }
 
    return (
       <Modal onClose={() => setDeletedUser({})}>
          <h1 className={styles.modal__title}>Anda yakin ingin menghapus data user?</h1>
          <Button type="button" variant="danger" onClick={() => handleDelete()}
-            >Hapus</Button>
+         >
+            {isLoading ? 'Loading...' : 'Ya, Hapus'}
+            </Button>
       </Modal>
    )
 } 

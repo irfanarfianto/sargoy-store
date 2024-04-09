@@ -1,23 +1,22 @@
 import Link from 'next/link';
 import styles from './Register.module.scss';
-import { FormEvent, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import { useRouter } from 'next/router';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import authServices from '@/services/auth';
 import AuthLayout from '@/components/layouts/AuthLayout';
 
-const RegisterView = () => {
+const RegisterView = ({ setToaster }: {
+   setToaster: Dispatch<SetStateAction<{}>>
+}) => {
    const [isLoading, setIsLoading] = useState(false);
-   const [error, setError] = useState('');
-
    const { push } = useRouter();
 
    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 
       event.preventDefault();
       setIsLoading(true);
-      setError('');
 
       const form = event.target as HTMLFormElement;
       const data = {
@@ -27,26 +26,40 @@ const RegisterView = () => {
          password: form.password.value
       };
 
-      const result = await authServices.registerAccount(data);
-
-      if (result.status === 200) {
+      try {
+          const result = await authServices.registerAccount(data);
+         if (result.status === 200) {
          form.reset();
          setIsLoading(false);
          push('/auth/login');
-      } else {
+         setToaster({
+            variant: 'success',
+            message: 'Register Success'
+         });
+         } else {
+            setIsLoading(false);
+            setToaster({
+               variant: 'error',
+               message: 'Register Gagal'
+            });
+         }
+      } catch (error) {
          setIsLoading(false);
-         setError("Email sudah digunakan");
+            setToaster({
+               variant: 'error',
+               message: 'Email sudah digunakan'
+            });
       }
    };
 
 
    return (
-      <AuthLayout title='Register' error={error} link='/auth/login' linkText='Sudah punya akun? Login '>
+      <AuthLayout title='Register' link='/auth/login' linkText='Sudah punya akun? Login ' setToaster={setToaster}>
          <form onSubmit={handleSubmit}>
-               <Input label='Email' name='email' type='email' />
-               <Input label='Nama Lengkap' name='fullname' type='text' />
-               <Input label='Nomor Handphone' name='phone' type='number' />
-               <Input label='Password' name='password' type='password' />
+               <Input label='Email' name='email' type='email' placeholder='Masukkan email Anda' />
+               <Input label='Nama Lengkap' name='fullname' type='text' placeholder='Masukkan Nama Lengkap' />
+               <Input label='Nomor Handphone' name='phone' type='number' placeholder='Masukkan Nomor Handphone' />
+               <Input label='Password' name='password' type='password' placeholder='Masukkan Password' />
                <Button type='submit' className={styles.register__button} variant='primary'>{isLoading ? 'Loading...' : 'Register'}</Button>
          </form>
       </AuthLayout>

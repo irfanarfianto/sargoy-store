@@ -1,17 +1,15 @@
 import Link from 'next/link';
 import styles from './Login.module.scss';
-import { FormEvent, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import AuthLayout from '@/components/layouts/AuthLayout';
 
-const LoginView = () => {
+const LoginView = ({ setToaster }: { setToaster: Dispatch<SetStateAction<{}>>; }) => {
 
    const [isLoading, setIsLoading] = useState(false);
-   const [error, setError] = useState('');
-
    const { push, query } = useRouter();
 
    const callbackUrl: any = query.callbackUrl || '/';
@@ -20,7 +18,6 @@ const LoginView = () => {
 
       event.preventDefault();
       setIsLoading(true);
-      setError('');
 
       const form = event.target as HTMLFormElement;
       try {
@@ -37,20 +34,26 @@ const LoginView = () => {
             push(callbackUrl);
          } else {
             setIsLoading(false);
-            setError('Email atau Password salah');
+            setToaster({
+               variant: 'error',
+               message: 'Email atau Password salah'
+            });
          }
       } catch (error) {
          setIsLoading(false);
-         setError('Email atau Password salah');
+         setToaster({
+            variant: 'error',
+            message: 'Login gagal, silahkan coba lagi'
+         });
       }
    };
 
 
    return (
-      <AuthLayout title='Login' error={error} link='/auth/register' linkText='Belum punya akun? Daftar '>
+      <AuthLayout title='Login' link='/auth/register' linkText='Belum punya akun? Daftar ' setToaster={setToaster}>
          <form onSubmit={handleSubmit}>
-            <Input label='Email' name='email' type='email' />
-             <Input label='Password' name='password' type='password' />
+            <Input label='Email' name='email' type='email' placeholder='Masukkan email' />
+             <Input label='Password' name='password' type='password' placeholder='Masukkan password' />
             <Button type='submit' variant='primary' className={styles.login__button}> {isLoading ? 'Loading...' : 'Login'}</Button>
          </form>
          <hr className={styles.login__devider} />

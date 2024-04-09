@@ -1,20 +1,23 @@
 import AdminLayout from "@/components/layouts/AdminLayout";
 import Button from "@/components/ui/Button";
 import styles from "./Users.module.scss";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalDeleteUser from "./ModalDeleteUser";
+import { User } from "@/types/user.type";
+import { useSession } from "next-auth/react";
 
 type Propstypes = {
-   users: any;
-   setToaster: any;
+   users: User[];
+   setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 const UsersAdminView = (props: Propstypes) => {
    const { users, setToaster } = props;
-   const [UpdatedUser, setUpdatedUser] = useState<any>({});
-   const [deletedUser, setDeletedUser] = useState<any>({});
-   const [usersData, setUsersData] = useState<any>([]);
+     const session: any = useSession();
+   const [UpdatedUser, setUpdatedUser] = useState<User | {}>({});
+   const [deletedUser, setDeletedUser] = useState<User | {}>({});
+   const [usersData, setUsersData] = useState<User[]>([]);
 
    useEffect(() => {
       setUsersData(users);
@@ -39,7 +42,7 @@ const UsersAdminView = (props: Propstypes) => {
                   </tr>
                </thead>
                <tbody>
-                  {usersData.map((user: any, index: number) => (
+                  {usersData.map((user: User, index: number) => (
                      <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{user.fullname}</td>
@@ -47,7 +50,7 @@ const UsersAdminView = (props: Propstypes) => {
                         <td>{user.role}</td>
                         <td>
                            <div className={styles.users__table__action}>
-                               <Button type="button" variant="secondary" onClick={() => setUpdatedUser(user)} className={styles.users__table__action__edit}><i className='bx bxs-edit'/></Button>
+                              <Button type="button" variant="secondary" onClick={() => setUpdatedUser(user)} className={styles.users__table__action__edit}><i className='bx bxs-edit'/></Button>
                            <Button type="button" variant="danger" onClick={() => setDeletedUser(user)} className={styles.users__table__action__delete}><i className='bx bx-trash'/></Button>
                            </div>
                         </td>
@@ -58,7 +61,13 @@ const UsersAdminView = (props: Propstypes) => {
          </div>
          </AdminLayout>
          {Object.keys(UpdatedUser).length && (
-            <ModalUpdateUser UpdatedUser={UpdatedUser} setUpdatedUser={setUpdatedUser} setUsersData={setUsersData} setToaster={setToaster} />
+            <ModalUpdateUser
+               UpdatedUser={UpdatedUser}
+               setUpdatedUser={setUpdatedUser}
+               setUsersData={setUsersData}
+               setToaster={setToaster}
+               session={session}
+            />
          )}
          {Object.keys(deletedUser).length && (
             <ModalDeleteUser
@@ -66,6 +75,7 @@ const UsersAdminView = (props: Propstypes) => {
                setDeletedUser={setDeletedUser}
                setUsersData={setUsersData} 
                setToaster={setToaster}
+               session={session}
             />
          )}
       </>

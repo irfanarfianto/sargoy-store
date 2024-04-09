@@ -3,12 +3,22 @@ import Input from "@/components/ui/Input";
 import Modal from "@/components/ui/Modal";
 import Select from "@/components/ui/Select";
 import userServices from "@/services/user";
+import { User } from "@/types/user.type";
 import { useSession } from "next-auth/react";
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 
-const ModalUpdateUser = (props: any) => {
-   const { UpdatedUser, setUpdatedUser, setUsersData, setToaster } = props;
-   const session: any = useSession();
+type Propstypes = {
+   setUsersData: Dispatch<SetStateAction<User[]>>;
+   setToaster: Dispatch<SetStateAction<{}>>;
+   UpdatedUser: User | any;
+   setUpdatedUser: Dispatch<SetStateAction<{}>>;
+   session: any;
+};
+
+
+const ModalUpdateUser = (props: Propstypes) => {
+   const { UpdatedUser, setUpdatedUser, setUsersData, setToaster, session } = props;
+
    const [isLoading, setIsLoading] = useState(false);
    const handleUpdate = async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -47,12 +57,14 @@ const ModalUpdateUser = (props: any) => {
          <form onSubmit={handleUpdate}>
             <Input label='Email' name='email' type='email' defaultValue={UpdatedUser?.email} disabled />
             <Input label='Nama Lengkap' name='fullname' type='text' defaultValue={UpdatedUser?.fullname} disabled />
-            <Input label='Nomor Handphone' name='phone' type='number' defaultValue={UpdatedUser?.phone} disabled />
+            <Input label='Nomor Handphone' name='phone' placeholder="08xxxx" type='number' defaultValue={UpdatedUser?.phone} disabled />
             <Select label='Role' name='role' defaultValue={UpdatedUser?.role} options={[
                { value: 'admin', label: 'Admin' },
                { value: 'member', label: 'Member' }
                ]} />
-            <Button type="submit" variant="primary">Update</Button>
+            <Button type="submit" variant="primary">
+               {isLoading ? 'Updating...' : 'Update'}
+            </Button>
          </form>
       </Modal>
    );

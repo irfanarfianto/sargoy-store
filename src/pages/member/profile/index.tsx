@@ -1,10 +1,15 @@
 import ProfileMemberView from "@/components/views/member/Profile"
 import userServices from "@/services/user";
+import { User } from "@/types/user.type";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
+type Propstypes = {
+   setToaster: Dispatch<SetStateAction<{}>>;
+};
 
 const ProfilePage = ({setToaster}:any ) => {
-   const [profile, setProfile,] = useState({});
+   const [profile, setProfile,] = useState<User | {}>({});
    const session: any = useSession();
    useEffect(() => {
       if (session.data?.accessToken && Object.keys(profile).length === 0) {
