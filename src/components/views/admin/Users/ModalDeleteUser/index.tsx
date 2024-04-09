@@ -2,7 +2,7 @@ import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import userServices from "@/services/user";
 import styles from './ModalDeleteUser.module.scss';
-import { User } from "next-auth";
+import { User } from "@/types/user.type";
 import { Dispatch, SetStateAction, useState } from "react";
 
 type Propstypes = {
