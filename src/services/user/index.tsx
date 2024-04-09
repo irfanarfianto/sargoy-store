@@ -8,7 +8,7 @@ export const userServices = {
          'Authorization': `Bearer ${token}`,
       },
    }),
-   deteleUser: (id: string, token:string) => instance.delete(`/api/user/${id}`, {
+   deleteUser: (id: string, token:string) => instance.delete(`/api/user/${id}`, {
       headers: {
          'Authorization': `Bearer ${token}`,
       },

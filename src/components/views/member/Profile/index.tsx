@@ -55,6 +55,14 @@ const ProfileMemberView = ({ profile, setProfile, session, setToaster }: Propsty
       const form = e.target as HTMLFormElement;
       const file = form.image.files[0]
       if (file) {
+         if (file.size > 1024 * 1024) { // Validasi ukuran file maksimum (1 MB)
+         setToaster({
+            variant: 'error',
+            message: 'Maximum file size exceeded. Please upload an image with maximum size of 1 MB.'
+         });
+         setIsLoading('');
+         return;
+         }
          uploadFile(profile.id, file, async (status: boolean, newImageURL: string) => {
             if (status) {
                const data = {
